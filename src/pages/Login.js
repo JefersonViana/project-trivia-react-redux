@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
   state = {
@@ -14,6 +15,19 @@ class Login extends React.Component {
     });
   };
 
+  handleClick = async () => {
+    await fetch('https://opentdb.com/api_token.php?command=request')
+      .then((response) => response.json())
+      .then((json) => localStorage.setItem('token', json.token));
+    const { history } = this.props;
+    history.push('/game');
+  };
+
+  handlerSetting = () => {
+    const { history } = this.props;
+    history.push('/setting');
+  };
+
   render() {
     const { email, nome } = this.state;
     const disabledEmail = !email.includes('@') && !email.includes('.com');
@@ -26,7 +40,7 @@ class Login extends React.Component {
           <input
             type="text"
             placeholder="Email"
-            data-testid="input-player-email"
+            data-testid="input-gravatar-email"
             name="email"
             value={ email }
             onChange={ this.onChange }
@@ -45,15 +59,27 @@ class Login extends React.Component {
         <button
           data-testid="btn-play"
           type="button"
-          // onClick={}
+          onClick={ this.handleClick }
           disabled={ disabledEmail || disabledName }
         >
           Play
+        </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.handlerSetting }
+        >
+          Configurações
         </button>
       </form>
 
     );
   }
 }
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;

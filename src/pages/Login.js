@@ -23,6 +23,11 @@ class Login extends React.Component {
     history.push('/game');
   };
 
+  handlerSetting = () => {
+    const { history } = this.props;
+    history.push('/setting');
+  };
+
   render() {
     const { email, nome } = this.state;
     const disabledEmail = !email.includes('@') && !email.includes('.com');
@@ -58,6 +63,13 @@ class Login extends React.Component {
           disabled={ disabledEmail || disabledName }
         >
           Play
+        </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.handlerSetting }
+        >
+          Configurações
         </button>
       </form>
 

@@ -1,21 +1,19 @@
-import { email1, name1 } from '../../actions';
+import { PROFILE_DATA } from '../../actions';
 
 const INITIAL_STATE = {
-  email: '',
   name: '',
+  assertions: '',
+  score: 0,
+  gravatarEmail: '',
 };
 
 const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case email1:
+  case PROFILE_DATA:
     return {
       ...state,
-      email: action.payload,
-    };
-  case name1:
-    return {
-      ...state,
-      name: action.payload,
+      gravatarEmail: action.payload.email,
+      name: action.payload.name,
     };
   default:
     return state;

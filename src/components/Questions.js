@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Questions.css';
 
 class Questions extends React.Component {
   state = {
@@ -26,6 +27,25 @@ class Questions extends React.Component {
     });
   }
 
+  verificarResposta = () => {
+    const { objQuestions } = this.props;
+    const respostas = document.getElementsByTagName('button');
+    console.log(respostas);
+    // Verificar cada resposta para determinar se está correta ou incorreta
+    for (let i = 0; i < respostas.length; i += 1) {
+      const resposta = respostas[i];
+      if (objQuestions.correct_answer === resposta.innerHTML
+        && resposta.getAttribute('data-testid') === 'correct-answer') {
+        // Resposta correta
+        resposta.classList.add('resposta-correta');
+        console.log('entrou');
+      } else {
+        // Resposta incorreta
+        resposta.classList.add('resposta-incorreta');
+      }
+    }
+  };
+
   render() {
     const { array, verify } = this.state;
     const { objQuestions } = this.props;
@@ -46,11 +66,19 @@ class Questions extends React.Component {
               { verify
             && (
               array.map((element, index) => (element === objQuestions.correct_answer
-                ? (<button data-testid="correct-answer" key={ index }>{element}</button>)
+                ? (
+                  <button
+                    data-testid="correct-answer"
+                    key={ index }
+                    onClick={ this.verificarResposta }
+                  >
+                    {element}
+                  </button>)
                 : (
                   <button
                     data-testid={ `wrong-answer${index}` }
                     key={ index }
+                    onClick={ this.verificarResposta }
                   >
                     {element}
                   </button>

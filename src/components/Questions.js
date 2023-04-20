@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Questions.css';
 import { connect } from 'react-redux';
+import { score } from '../redux/actions';
 
 class Questions extends React.Component {
   state = {
@@ -13,6 +14,7 @@ class Questions extends React.Component {
 
   componentDidMount() {
     const { objQuestions } = this.props;
+    console.log(objQuestions.correct_answer);
     const incorretAnswers = objQuestions.incorrect_answers;
     const correctAnswer = objQuestions.correct_answer;
     const arrayAnswers = [...incorretAnswers, correctAnswer];
@@ -33,7 +35,8 @@ class Questions extends React.Component {
     this.timer = setInterval(() => this.tick(), time);
   };
 
-  verificarResposta = () => {
+  verificarResposta = ({ target }) => {
+    this.transition();
     const { objQuestions } = this.props;
     const respostas = document.getElementsByTagName('button');
     // Verificar cada resposta para determinar se está correta ou incorreta
@@ -47,6 +50,27 @@ class Questions extends React.Component {
         // Resposta incorreta
         resposta.classList.add('resposta-incorreta');
       }
+    }
+    if (objQuestions.correct_answer === target.innerHTML) {
+      const { countdown } = this.state;
+      const DEZ = 10;
+      const HARD = 3;
+      const MEDIUM = 2;
+      const EASY = 1;
+      const { dispatch } = this.props;
+      this.setState({ disable: true });
+      switch (objQuestions.difficulty) {
+      case 'hard':
+        return dispatch(score(DEZ + (countdown * HARD)));
+      case 'medium':
+        return dispatch(score(DEZ + (countdown * MEDIUM)));
+      case 'easy':
+        return dispatch(score(DEZ + (countdown * EASY)));
+      default:
+        break;
+      }
+    } else {
+      this.setState({ disable: true });
     }
   };
 
@@ -110,6 +134,12 @@ class Questions extends React.Component {
             </div>
           </div>
         )}
+        { disable
+        && (
+          <button data-testid="btn-next">
+            Next
+          </button>
+        )}
       </div>
     );
   }
@@ -117,6 +147,7 @@ class Questions extends React.Component {
 
 Questions.propTypes = {
   objQuestions: PropTypes.shape({
+    difficulty: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(
       PropTypes.string.isRequired,
     ).isRequired,
@@ -124,6 +155,7 @@ Questions.propTypes = {
     category: PropTypes.string.isRequired,
     question: PropTypes.string.isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(Questions);

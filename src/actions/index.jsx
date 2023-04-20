@@ -1,11 +1,6 @@
-export const email1 = 'email';
-export const name1 = 'name';
+export const PROFILE_DATA = 'PROFILE_DATA';
 
-export const addEmail = (email) => ({
-  type: email1,
-  payload: email,
-});
-export const addName = (name) => ({
-  type: name1,
-  payload: name,
+export const profile = (email, name) => ({
+  type: PROFILE_DATA,
+  payload: { email, name },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addEmail, addName } from '../actions';
+import { profile } from '../actions';
 
 class Login extends React.Component {
   state = {
@@ -23,8 +23,7 @@ class Login extends React.Component {
       .then((json) => localStorage.setItem('token', json.token));
     const { history, dispatch } = this.props;
     const { email, nome } = this.state;
-    dispatch(addEmail(email));
-    dispatch(addName(nome));
+    dispatch(profile(email, nome));
     history.push('/game');
   };
 

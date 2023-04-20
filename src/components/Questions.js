@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Questions.css';
 
 class Questions extends React.Component {
   state = {
@@ -10,11 +11,8 @@ class Questions extends React.Component {
   componentDidMount() {
     const { objQuestions } = this.props;
     const incorretAnswers = objQuestions.incorrect_answers;
-    console.log(incorretAnswers);
     const correctAnswer = objQuestions.correct_answer;
-    console.log(correctAnswer);
     const arrayAnswers = [...incorretAnswers, correctAnswer];
-    console.log(arrayAnswers);
 
     for (let i = arrayAnswers.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -25,6 +23,23 @@ class Questions extends React.Component {
       verify: true,
     });
   }
+
+  verificarResposta = () => {
+    const { objQuestions } = this.props;
+    const respostas = document.getElementsByTagName('button');
+    // Verificar cada resposta para determinar se está correta ou incorreta
+    for (let i = 0; i < respostas.length; i += 1) {
+      const resposta = respostas[i];
+      if (objQuestions.correct_answer === resposta.innerHTML
+        && resposta.getAttribute('data-testid') === 'correct-answer') {
+        // Resposta correta
+        resposta.classList.add('resposta-correta');
+      } else {
+        // Resposta incorreta
+        resposta.classList.add('resposta-incorreta');
+      }
+    }
+  };
 
   render() {
     const { array, verify } = this.state;
@@ -46,11 +61,19 @@ class Questions extends React.Component {
               { verify
             && (
               array.map((element, index) => (element === objQuestions.correct_answer
-                ? (<button data-testid="correct-answer" key={ index }>{element}</button>)
+                ? (
+                  <button
+                    data-testid="correct-answer"
+                    key={ index }
+                    onClick={ this.verificarResposta }
+                  >
+                    {element}
+                  </button>)
                 : (
                   <button
                     data-testid={ `wrong-answer${index}` }
                     key={ index }
+                    onClick={ this.verificarResposta }
                   >
                     {element}
                   </button>

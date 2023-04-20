@@ -11,11 +11,8 @@ class Questions extends React.Component {
   componentDidMount() {
     const { objQuestions } = this.props;
     const incorretAnswers = objQuestions.incorrect_answers;
-    console.log(incorretAnswers);
     const correctAnswer = objQuestions.correct_answer;
-    console.log(correctAnswer);
     const arrayAnswers = [...incorretAnswers, correctAnswer];
-    console.log(arrayAnswers);
 
     for (let i = arrayAnswers.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -30,7 +27,6 @@ class Questions extends React.Component {
   verificarResposta = () => {
     const { objQuestions } = this.props;
     const respostas = document.getElementsByTagName('button');
-    console.log(respostas);
     // Verificar cada resposta para determinar se está correta ou incorreta
     for (let i = 0; i < respostas.length; i += 1) {
       const resposta = respostas[i];
@@ -38,7 +34,6 @@ class Questions extends React.Component {
         && resposta.getAttribute('data-testid') === 'correct-answer') {
         // Resposta correta
         resposta.classList.add('resposta-correta');
-        console.log('entrou');
       } else {
         // Resposta incorreta
         resposta.classList.add('resposta-incorreta');

@@ -1,9 +1,9 @@
 .resposta-correta {
-    background-color: rgb(6, 240, 15);
-    border: 3px solid rgb(6, 240, 15);
-  }
+  background-color: rgb(6, 240, 15);
+  border: 3px solid rgb(6, 240, 15);
+}
   
-  .resposta-incorreta {
-    background-color: red;
-    border: 3px solid red;
-  }
+.resposta-incorreta {
+  background-color: red;
+  border: 3px solid red;
+}

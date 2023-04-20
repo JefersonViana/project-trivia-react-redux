@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Questions.css';
+import { connect } from 'react-redux';
 
 class Questions extends React.Component {
   state = {
     array: [],
     verify: false,
+    countdown: 30,
+    disable: false,
   };
 
   componentDidMount() {
@@ -22,7 +25,13 @@ class Questions extends React.Component {
       array: arrayAnswers,
       verify: true,
     });
+    this.countdown();
   }
+
+  countdown = () => {
+    const time = 1000;
+    this.timer = setInterval(() => this.tick(), time);
+  };
 
   verificarResposta = () => {
     const { objQuestions } = this.props;
@@ -41,12 +50,29 @@ class Questions extends React.Component {
     }
   };
 
+  transition() {
+    clearInterval(this.timer);
+  }
+
+  tick() {
+    const { countdown } = this.state;
+    if (countdown === 0) {
+      this.transition();
+      this.setState({
+        disable: true,
+      });
+    } else {
+      this.setState({ countdown: countdown - 1 });
+    }
+  }
+
   render() {
-    const { array, verify } = this.state;
+    const { array, verify, countdown, disable } = this.state;
     const { objQuestions } = this.props;
 
     return (
       <div>
+        <p>{ countdown }</p>
         { array.length > 0
         && (
           <div>
@@ -63,6 +89,7 @@ class Questions extends React.Component {
               array.map((element, index) => (element === objQuestions.correct_answer
                 ? (
                   <button
+                    disabled={ disable }
                     data-testid="correct-answer"
                     key={ index }
                     onClick={ this.verificarResposta }
@@ -71,6 +98,7 @@ class Questions extends React.Component {
                   </button>)
                 : (
                   <button
+                    disabled={ disable }
                     data-testid={ `wrong-answer${index}` }
                     key={ index }
                     onClick={ this.verificarResposta }
@@ -98,4 +126,4 @@ Questions.propTypes = {
   }).isRequired,
 };
 
-export default Questions;
+export default connect()(Questions);

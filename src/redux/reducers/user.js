@@ -2,10 +2,9 @@ import { PLAYER_SCORE, PROFILE_DATA } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
-  correctPoint: 0,
 };
 
 const user = (state = INITIAL_STATE, action) => {
@@ -20,7 +19,7 @@ const user = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.payload,
-      correctPoint: state.correctPoint + 1,
+      assertions: state.assertions + 1,
     };
   default:
     return state;

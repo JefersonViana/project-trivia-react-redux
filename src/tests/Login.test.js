@@ -4,7 +4,7 @@ import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 
-xdescribe('Testando página de Login', () => {
+describe('Testando página de Login', () => {
   test('Testando os inputs e a rota "/game".', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const inputsEl = screen.getAllByRole('textbox');

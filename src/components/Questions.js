@@ -39,18 +39,16 @@ class Questions extends React.Component {
     this.transition();
     const { objQuestions } = this.props;
     const respostas = document.getElementsByTagName('button');
-    // Verificar cada resposta para determinar se está correta ou incorreta
     for (let i = 0; i < respostas.length; i += 1) {
       const resposta = respostas[i];
       if (objQuestions.correct_answer === resposta.innerHTML
         && resposta.getAttribute('data-testid') === 'correct-answer') {
-        // Resposta correta
         resposta.classList.add('resposta-correta');
       } else {
-        // Resposta incorreta
         resposta.classList.add('resposta-incorreta');
       }
     }
+
     if (objQuestions.correct_answer === target.innerHTML) {
       const { countdown } = this.state;
       const DEZ = 10;
@@ -71,6 +69,34 @@ class Questions extends React.Component {
       }
     } else {
       this.setState({ disable: true });
+    }
+  };
+
+  handleNext = () => {
+    const { callback } = this.props;
+    const btnsQuestions = document.getElementsByTagName('button');
+    console.log(btnsQuestions);
+    for (let index = 0; index < btnsQuestions.length; index += 1) {
+      btnsQuestions[index].removeAttribute('class');
+    }
+    const obj = callback();
+    if (obj) {
+      const incorretAnswers = obj.incorrect_answers;
+      const correctAnswer = obj.correct_answer;
+      const arrayAnswers = [...incorretAnswers, correctAnswer];
+
+      for (let i = arrayAnswers.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arrayAnswers[i], arrayAnswers[j]] = [arrayAnswers[j], arrayAnswers[i]];
+      }
+      this.setState({
+        disable: false,
+        array: arrayAnswers,
+        verify: true,
+        countdown: 30,
+      });
+      this.transition();
+      this.countdown();
     }
   };
 
@@ -136,7 +162,10 @@ class Questions extends React.Component {
         )}
         { disable
         && (
-          <button data-testid="btn-next">
+          <button
+            onClick={ this.handleNext }
+            data-testid="btn-next"
+          >
             Next
           </button>
         )}
@@ -156,6 +185,7 @@ Questions.propTypes = {
     question: PropTypes.string.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
+  callback: PropTypes.func.isRequired,
 };
 
 export default connect()(Questions);

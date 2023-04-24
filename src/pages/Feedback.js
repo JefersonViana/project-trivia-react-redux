@@ -5,21 +5,23 @@ import Header from '../components/header';
 
 class Feedback extends React.Component {
   render() {
-    const { correctPoint } = this.props;
+    const { assertions, score } = this.props;
     const FIX = 3;
     return (
       <div>
-        {/* <h1>Feedback</h1> */}
         <Header />
-        { correctPoint < FIX && <h1 data-testid="feedback-text">Could be better...</h1>}
-        { correctPoint >= FIX && <h1 data-testid="feedback-text">Well Done!</h1>}
+        <p data-testid="feedback-total-score">{score}</p>
+        <p data-testid="feedback-total-question">{assertions}</p>
+        { assertions < FIX && <h1 data-testid="feedback-text">Could be better...</h1>}
+        { assertions >= FIX && <h1 data-testid="feedback-text">Well Done!</h1>}
       </div>
     );
   }
 }
 
 Feedback.propTypes = {
-  correctPoint: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({

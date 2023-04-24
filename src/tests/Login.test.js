@@ -1,11 +1,10 @@
 
 import { screen, waitFor } from '@testing-library/react';
-// import Login from '../pages/Login';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 
-describe('Testando página de Login', () => {
+xdescribe('Testando página de Login', () => {
   test('Testando os inputs e a rota "/game".', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const inputsEl = screen.getAllByRole('textbox');

@@ -14,7 +14,7 @@ class Questions extends React.Component {
 
   componentDidMount() {
     const { objQuestions } = this.props;
-    console.log(objQuestions.correct_answer);
+
     const incorretAnswers = objQuestions.incorrect_answers;
     const correctAnswer = objQuestions.correct_answer;
     const arrayAnswers = [...incorretAnswers, correctAnswer];
@@ -75,7 +75,6 @@ class Questions extends React.Component {
   handleNext = () => {
     const { callback } = this.props;
     const btnsQuestions = document.getElementsByTagName('button');
-    console.log(btnsQuestions);
     for (let index = 0; index < btnsQuestions.length; index += 1) {
       btnsQuestions[index].removeAttribute('class');
     }

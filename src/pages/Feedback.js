@@ -16,6 +16,15 @@ class Feedback extends React.Component {
         { assertions >= FIX && <h1 data-testid="feedback-text">Well Done!</h1>}
         <button
           onClick={ () => {
+            history.push('/ranking');
+          } }
+          data-testid="btn-ranking"
+        >
+          Ranking
+
+        </button>
+        <button
+          onClick={ () => {
             history.push('/');
           } }
           data-testid="btn-play-again"

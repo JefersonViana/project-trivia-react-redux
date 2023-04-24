@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   assertions: '',
   score: 0,
   gravatarEmail: '',
+  correctPoint: 0,
 };
 
 const user = (state = INITIAL_STATE, action) => {
@@ -19,6 +20,7 @@ const user = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.payload,
+      correctPoint: state.correctPoint + 1,
     };
   default:
     return state;

@@ -14,13 +14,19 @@ class Game extends React.Component {
     this.requestApi();
   }
 
-  funcao = (name, score, gravatarEmail) => {
+  funcao = (name, score, gravatarEmail, assertions) => {
     const objPlayers = JSON.parse(localStorage.getItem('players'));
     if (objPlayers.length === 0) {
       localStorage.setItem(
         'players',
         JSON.stringify([
-          { name, score, gravatarEmail, gravatarImg: localStorage.getItem('link') },
+          {
+            name,
+            score,
+            gravatarEmail,
+            gravatarImg: localStorage.getItem('link'),
+            assertions,
+          },
         ]),
       );
     } else {
@@ -28,7 +34,13 @@ class Game extends React.Component {
         'players',
         JSON.stringify([
           ...objPlayers,
-          { name, score, gravatarEmail, gravatarImg: localStorage.getItem('link') },
+          {
+            name,
+            score,
+            gravatarEmail,
+            gravatarImg: localStorage.getItem('link'),
+            assertions,
+          },
         ]),
       );
     }
@@ -38,8 +50,8 @@ class Game extends React.Component {
     const { nextQuestion, results } = this.state;
     const FIX = 4;
     if (nextQuestion === FIX) {
-      const { history, name, score, gravatarEmail } = this.props;
-      this.funcao(name, score, gravatarEmail);
+      const { history, name, score, gravatarEmail, assertions } = this.props;
+      this.funcao(name, score, gravatarEmail, assertions);
       history.push('/feedback');
       return;
     }
@@ -89,6 +101,7 @@ Game.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({

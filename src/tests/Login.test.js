@@ -1,7 +1,6 @@
-
 import { screen, waitFor } from '@testing-library/react';
-import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import userEvent from '@testing-library/user-event';
+import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 
 describe('Testando página de Login', () => {
@@ -14,15 +13,15 @@ describe('Testando página de Login', () => {
     expect(inputsEl[1]).toBeInTheDocument();
     expect(btnsEl[0]).toBeDisabled();
     expect(btnsEl[1]).toBeInTheDocument();
-    
+
     userEvent.type(inputsEl[0], 'teste@teste.com');
     userEvent.type(inputsEl[1], 'user-trybe');
     userEvent.click(btnsEl[0]);
 
-    const inputEmail = await screen.findByText(/game/i);
+    const inputEmail = await screen.findByText(/teste@teste.com/i);
     await waitFor(() => {
       expect(inputEmail).toBeInTheDocument();
-    })
+    });
     expect(history.location.pathname).toBe('/game');
     expect(history.entries).toHaveLength(2);
   });

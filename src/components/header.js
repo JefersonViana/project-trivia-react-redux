@@ -4,9 +4,16 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 class Header extends Component {
+  componentDidMount() {
+    if (!localStorage.getItem('players')) {
+      const VAZIO = [];
+      localStorage.setItem('players', JSON.stringify(VAZIO));
+    }
+  }
+
   render() {
     const { email, nome, score } = this.props;
-
+    localStorage.setItem('link', `https://www.gravatar.com/avatar/${md5(email).toString()}`);
     return (
       <div>
         <img

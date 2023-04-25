@@ -14,6 +14,7 @@ const user = (state = INITIAL_STATE, action) => {
       ...state,
       gravatarEmail: action.payload.email,
       name: action.payload.name,
+      score: 0,
     };
   case PLAYER_SCORE:
     return {

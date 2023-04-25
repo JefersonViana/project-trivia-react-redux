@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/header';
 import Questions from '../components/Questions';
 
@@ -13,11 +14,32 @@ class Game extends React.Component {
     this.requestApi();
   }
 
+  funcao = (name, score, gravatarEmail) => {
+    const objPlayers = JSON.parse(localStorage.getItem('players'));
+    if (objPlayers.length === 0) {
+      localStorage.setItem(
+        'players',
+        JSON.stringify([
+          { name, score, gravatarEmail, gravatarImg: localStorage.getItem('link') },
+        ]),
+      );
+    } else {
+      localStorage.setItem(
+        'players',
+        JSON.stringify([
+          ...objPlayers,
+          { name, score, gravatarEmail, gravatarImg: localStorage.getItem('link') },
+        ]),
+      );
+    }
+  };
+
   handleNextQuestions = () => {
     const { nextQuestion, results } = this.state;
     const FIX = 4;
     if (nextQuestion === FIX) {
-      const { history } = this.props;
+      const { history, name, score, gravatarEmail } = this.props;
+      this.funcao(name, score, gravatarEmail);
       history.push('/feedback');
       return;
     }
@@ -64,6 +86,13 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
 };
 
-export default Game;
+const mapStateToProps = (state) => ({
+  ...state.player,
+});
+
+export default connect(mapStateToProps)(Game);

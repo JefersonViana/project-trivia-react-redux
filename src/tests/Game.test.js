@@ -85,7 +85,7 @@ describe('', () => {
 
     waitFor(() => {
       expect(history.location.pathname).toBe('/feedback');
-      expect(localStorage.getItem('players')).toHaveLength(1);
+      expect(JSON.parse(localStorage.getItem('players'))).toHaveLength(1);
     })
 
   
@@ -139,5 +139,45 @@ describe('', () => {
     })
 
   
+  });
+});
+describe('', () => {
+  beforeEach(() => {
+    localStorage.setItem('players', JSON.stringify([
+      {
+        assertions: 0,
+        gravatarEmail: "teste@teste.com",
+        gravatarImg: "https://www.gravatar.com/avatar/ce11fce876c93ed5d2a72da660496473",
+        name: "51swcdb",
+        score: 0,
+      }
+    ]))
+  });
+  test('', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => (data)
+    }).mockResolvedValueOnce({
+      json: async () => ('17237e55258d31883fe45eefb64f8f65b4287005d05927c0548ffcc0ed05ccde')
+    })
+    global.setInterval = jest.fn(() => (() => {}), 1000);
+    const { history } = renderWithRouterAndRedux(<App />)
+    const inputsEl = screen.getAllByRole('textbox');
+    const btnEl = screen.getByRole('button', { name: 'Play' });
+    userEvent.type(inputsEl[0], 'player1@gmail.com')
+    userEvent.type(inputsEl[1], 'player-1')
+    userEvent.click(btnEl)
+
+    const question1 = await screen.findByText(/What is the capital of Australia?/i);
+    
+    expect(question1).toBeInTheDocument();
+    expect(global.setInterval).toHaveBeenCalled();
+    expect()
+
+    
+    const btnsIncorrect = await screen.findAllByTestId(/wrong-answer/i);
+    userEvent.click(btnsIncorrect[0]);
+    expect(btnsIncorrect[0]).toBeDisabled();
+    expect(btnsIncorrect[1]).toBeDisabled();
+    expect(btnsIncorrect[2]).toBeDisabled();
   });
 });

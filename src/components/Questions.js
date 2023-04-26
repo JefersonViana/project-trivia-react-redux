@@ -32,7 +32,17 @@ class Questions extends React.Component {
 
   countdown = () => {
     const time = 1000;
-    this.timer = setInterval(() => this.tick(), time);
+    this.timer = setInterval(() => {
+      const { countdown } = this.state;
+      if (countdown === 0) {
+        this.transition();
+        this.setState({
+          disable: true,
+        });
+      } else {
+        this.setState({ countdown: countdown - 1 });
+      }
+    }, time);
   };
 
   verificarResposta = ({ target }) => {
@@ -62,10 +72,8 @@ class Questions extends React.Component {
         return dispatch(score(DEZ + (countdown * HARD)));
       case 'medium':
         return dispatch(score(DEZ + (countdown * MEDIUM)));
-      case 'easy':
-        return dispatch(score(DEZ + (countdown * EASY)));
       default:
-        break;
+        return dispatch(score(DEZ + (countdown * EASY)));
       }
     } else {
       this.setState({ disable: true });
@@ -103,17 +111,17 @@ class Questions extends React.Component {
     clearInterval(this.timer);
   }
 
-  tick() {
-    const { countdown } = this.state;
-    if (countdown === 0) {
-      this.transition();
-      this.setState({
-        disable: true,
-      });
-    } else {
-      this.setState({ countdown: countdown - 1 });
-    }
-  }
+  // tick() {
+  //   const { countdown } = this.state;
+  //   if (countdown === 0) {
+  //     this.transition();
+  //     this.setState({
+  //       disable: true,
+  //     });
+  //   } else {
+  //     this.setState({ countdown: countdown - 1 });
+  //   }
+  // }
 
   render() {
     const { array, verify, countdown, disable } = this.state;
@@ -121,7 +129,7 @@ class Questions extends React.Component {
 
     return (
       <div>
-        <p>{ countdown }</p>
+        <p data-testid="paragraph">{ countdown }</p>
         { array.length > 0
         && (
           <div>

@@ -63,18 +63,29 @@ class Game extends React.Component {
 
   requestApi = async () => {
     const { history } = this.props;
-    await fetch(`https://opentdb.com/api.php?amount=5&token=${localStorage.getItem('token')}`)
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.results.length === 0) {
-          localStorage.clear();
-          history.push('/');
-        } else {
-          this.setState({
-            results: json.results,
-          });
-        }
+    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${localStorage.getItem('token')}`);
+    const data = await response.json();
+    if (data.results.length === 0) {
+      localStorage.clear();
+      history.push('/');
+    } else {
+      this.setState({
+        results: data.results,
       });
+    }
+    // await fetch(`https://opentdb.com/api.php?amount=5&token=${localStorage.getItem('token')}`)
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     if (json.results.length === 0) {
+    //       localStorage.clear();
+    //       history.push('/');
+    //     } else {
+    //       console.log(json.results);
+    //       this.setState({
+    //         results: json.results,
+    //       });
+    //     }
+    //   });
   };
 
   render() {

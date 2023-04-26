@@ -18,7 +18,7 @@ describe('Testando página de Login', () => {
     userEvent.type(inputsEl[1], 'user-trybe');
     userEvent.click(btnsEl[0]);
 
-    const inputEmail = await screen.findByText(/teste@teste.com/i);
+    const inputEmail = await screen.findByText(/user-trybe/i);
     await waitFor(() => {
       expect(inputEmail).toBeInTheDocument();
     });
